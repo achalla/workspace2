@@ -21,7 +21,7 @@ class SudokuBoard {
 	private final static int EMPTY_VALUE = 0;
 	private final static int SQUARE_SIZE = 3;
 	
-	public SudokuBoard(){
+	private SudokuBoard(){
 		board = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
 	}
 	

@@ -9,7 +9,8 @@ public class SudokuBoardTest {
 
 	@Before
 	public void initialize(){
-		SudokuBoard.getNewBoard();
+		SudokuBoard sb = SudokuBoard.getNewBoard();
+		sb.loadBoard2();
 	}
 	
 	
