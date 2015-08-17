@@ -1,0 +1,16 @@
+package solutions;
+
+
+public class ThreadedAVLTree<T extends Comparable<T>> {
+	
+	public static Node root;
+	
+	static class Node{
+		int balanceFactor;
+	}
+
+	public static void main(String[] args) {
+
+	}
+
+}

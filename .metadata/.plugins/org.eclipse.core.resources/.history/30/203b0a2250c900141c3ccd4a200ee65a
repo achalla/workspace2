@@ -1,0 +1,528 @@
+
+package solutions;
+
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+
+/*
+ * 
+ * 
+ * 
+ * 
+ * DON'T FORGET TO RECALCULATE THE BALANCE FACTORS 
+ * 
+ * 
+ * 
+ * 
+ * */
+
+
+
+public class ThreadedAVLTree2<T extends Comparable<T>> {
+	
+	public Node<T> root = null;
+	
+	@SuppressWarnings("serial")
+	public static class DangerException extends Exception{
+		public DangerException(){}
+	}
+	
+	
+	public static class Node<T extends Comparable<T>> implements Comparable<Node<T>>{
+		public Node<T> left = null, right = null, parent = null, leftThread = null, rightThread = null;
+		public int balanceFactor;
+		public T datum;
+		
+		public Node(T datum){
+			this.datum = datum;
+			balanceFactor = 0;
+		}
+		
+		public int compareTo(Node<T> n){
+			return this.datum.compareTo(n.datum);
+		}
+	}
+	
+	/*
+	 * 
+	 * METHODS
+	 * 
+	 * */
+
+	public void insert(T key) {//inserts as a bst
+		if(root == null){
+			System.out.println("hii, added "+key+" (root)");
+			root = new Node<T>(key);
+		}
+		else{
+			insertHelper(key, root);
+		}
+		System.out.println("Finished insert of "+key+":");
+		printTreeByLevel();
+	}
+	
+	public void balFactorizer(Node<T> n) {
+		Node<T> temp = n, temp2, par;
+		int currBF;
+		System.out.println("hii, adding "+n.datum);
+		while(temp != null){
+			currBF = getBF(temp);
+			
+			System.out.println("currBF "+currBF+" for node "+temp.datum);
+			if(Math.abs(currBF) > 1){ //rotations needed
+				System.out.println("BEWARE! BAL FACTOR AT: "+currBF+" for: "+temp.datum);
+				
+				
+				if(currBF == 2){
+					if(getBF(temp.right) > 0){
+						System.out.println("RIGHT RIGHT ROTATION for "+temp.datum);
+						rightRightRot(temp,temp.parent);
+					}else if(getBF(temp.right) < 0){
+						System.out.println("RIGHT LEFT ROTATION for "+temp.datum);
+						rightLeftRot(temp,temp.parent);
+					}else{
+						throw new IllegalStateException();
+					}
+					
+				
+					
+				}else if(currBF == -2){
+					if(getBF(temp.left) > 0){
+						System.out.println("LEFT RIGHT ROTATION for "+temp.datum);
+						leftRightRot(temp,temp.parent);
+					}else if(getBF(temp.left) < 0){
+						System.out.println("LEFT LEFT ROTATION for "+temp.datum);
+						leftLeftRot(temp,temp.parent);
+					}else{
+						throw new IllegalStateException();
+					}
+					
+				}else{
+					throw new IllegalStateException();
+				}
+			}
+			else temp.balanceFactor = currBF;
+			temp = temp.parent;
+		}
+	}
+	
+	public void balFacDown(Node<T> n){
+		Queue<Node<T>> q = new PriorityQueue<Node<T>>();
+		Node<T> temp;
+		
+		if(n == null) return;
+		q.add(n);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println("BF for "+temp.datum+" was "+temp.balanceFactor);
+			temp.balanceFactor = getBF(temp);
+			System.out.println("balFactorized "+temp.datum+" to bal factor: "+temp.balanceFactor);
+			if(temp.left != null) q.add(temp.left);
+			if(temp.right != null) q.add(temp.right);
+		}
+	}
+	
+	public void rightLeftRot(Node<T> input, Node<T> par) {
+		//int parentStatus; //-1 if parent's leftChild, 1 if right child, 0 if par is null
+		Node<T> temp, newNode, oldNode;
+		
+		
+	/*	if(par == null){
+			System.out.println("node: "+input.datum);
+			if(input.datum != root.datum) System.out.println("DANGER WILL ROBINSON");
+			parentStatus = 0;
+		}else{
+			System.out.println("node: "+input.datum+" par: "+par.datum);
+			if(input.parent.left.datum == par.datum){//rot is left child
+				parentStatus = -1;
+				System.out.println("rot is left child");
+			}else if(input.parent.right.datum == par.datum){//temp is right child
+				parentStatus = 1;
+				System.out.println("rot is right child");
+			}else{
+				
+				throw new DangerException();
+			}
+		}*/
+		printTreeByLevel();
+		
+		//rotate
+		oldNode = input.right;
+		newNode = oldNode.left;
+		
+		temp = newNode.right;
+		newNode.right = oldNode;
+		
+		newNode.parent = oldNode.parent;
+		oldNode.parent = newNode;
+		input.right = newNode;
+		
+		oldNode.left = temp;
+		
+		//update parent's child status:
+		/*if(parentStatus == -1){
+			newNode.parent.left = newNode;
+		}else if(parentStatus == 1){
+			newNode.parent.right = newNode;
+		}else{
+			System.out.println("rotation done to root");
+			root = newNode;
+		}*/
+		
+		System.out.println("RL");
+		printTreeByLevel();
+		System.out.println("making call to RR: ");
+		rightRightRot(input,input.parent);
+		balFacDown(input.parent);
+	}
+	
+	public void rightRightRot(Node<T> oldRoot, Node<T> par) {//"done" //3 2
+		int parentStatus; //-1 if parent's leftChild, 1 if right child, 0 if par is null
+		Node<T> temp, newRoot;
+		if(par == null){
+			System.out.println("parent of node "+oldRoot.datum+" is null");
+			if(oldRoot.datum != root.datum) System.out.println("DANGER WILL ROBINSON");
+			parentStatus = 0;
+		}else{
+			System.out.println("node: "+oldRoot.datum+" par: "+par.datum);
+			if(oldRoot.parent.left.datum == oldRoot.datum){//rot is left child
+				parentStatus = -1;
+				System.out.println("rot is left child");
+			}else if(oldRoot.parent.right.datum == oldRoot.datum){//temp is right child
+				parentStatus = 1;
+				System.out.println("rot is right child");
+			}else{
+				printParents();
+				throw new IllegalStateException();
+			}
+		}
+		//rotate
+		newRoot = oldRoot.right;
+		
+		temp = newRoot.left;
+		newRoot.left = oldRoot;
+		
+		newRoot.parent = oldRoot.parent;
+		oldRoot.parent = oldRoot.right;
+		
+		oldRoot.right = temp;
+		
+		//update parent's child status:
+		if(parentStatus == -1){
+			newRoot.parent.left = newRoot;
+		}else if(parentStatus == 1){
+			newRoot.parent.right = newRoot;
+		}else{
+			System.out.println("rotation done to root: (new root) "+newRoot.datum);
+			root = newRoot;
+		}
+		
+		System.out.println("RR");
+		balFacDown(newRoot);
+	}
+	
+	public void leftRightRot(Node<T> input, Node<T> par) {
+		//int parentStatus; //-1 if parent's leftChild, 1 if right child, 0 if par is null
+		Node<T> temp, newNode, oldNode;
+		
+		
+	/*	if(par == null){
+			System.out.println("node: "+input.datum);
+			if(input.datum != root.datum) System.out.println("DANGER WILL ROBINSON");
+			parentStatus = 0;
+		}else{
+			System.out.println("node: "+input.datum+" par: "+par.datum);
+			if(input.parent.left.datum == par.datum){//rot is left child
+				parentStatus = -1;
+				System.out.println("rot is left child");
+			}else if(input.parent.right.datum == par.datum){//temp is right child
+				parentStatus = 1;
+				System.out.println("rot is right child");
+			}else{
+				
+				throw new DangerException();
+			}
+		}*/
+		printTreeByLevel();
+		
+		//rotate
+		oldNode = input.left;
+		newNode = oldNode.right;
+		
+		temp = newNode.left;
+		newNode.left = oldNode;
+		
+		newNode.parent = oldNode.parent;
+		oldNode.parent = newNode;
+		input.left = newNode;
+		
+		oldNode.right = temp;
+		
+		//update parent's child status:
+		/*if(parentStatus == -1){
+			newNode.parent.left = newNode;
+		}else if(parentStatus == 1){
+			newNode.parent.right = newNode;
+		}else{
+			System.out.println("rotation done to root");
+			root = newNode;
+		}*/
+		
+		System.out.println("LR");
+		printTreeByLevel();
+		System.out.println("making call to LL: ");
+		leftLeftRot(input,input.parent);
+		balFacDown(input.parent);
+	}
+	
+	public void leftLeftRot(Node<T> oldRoot, Node<T> par) {//"done"
+		int parentStatus; //-1 if parent's leftChild, 1 if right child, 0 if par is null
+		Node<T> temp, newRoot;
+		if(par == null){
+			System.out.println("parent of node "+oldRoot.datum+" is null");
+			if(oldRoot.datum != root.datum) System.out.println("DANGER WILL ROBINSON");
+			parentStatus = 0;
+		}else{
+			System.out.println("node: "+oldRoot.datum+" par: "+par.datum);
+			if(oldRoot.parent.left.datum == oldRoot.datum){//rot is left child
+				parentStatus = -1;
+				System.out.println("rot is left child");
+			}else if(oldRoot.parent.right.datum == oldRoot.datum){//temp is right child
+				parentStatus = 1;
+				System.out.println("rot is right child");
+			}else{
+				throw new IllegalStateException();
+			}
+		}
+		//rotate
+		newRoot = oldRoot.left;
+		
+		temp = newRoot.right;
+		newRoot.right = oldRoot;
+		
+		newRoot.parent = oldRoot.parent;
+		oldRoot.parent = newRoot;
+		
+		oldRoot.left = temp;
+		
+		//update parent's child status:
+		if(parentStatus == -1){
+			newRoot.parent.left = newRoot;
+		}else if(parentStatus == 1){
+			newRoot.parent.right = newRoot;
+		}else{
+			System.out.println("rotation done to root: (new root) "+newRoot.datum);
+			root = newRoot;
+		}
+		
+		System.out.println("LL");
+		balFacDown(newRoot);
+		
+	}
+	
+	public void insertHelper(T curr, Node<T> other) {//inserts as a bst
+		if(curr.compareTo((T) other.datum) > 0){
+			if(other.right == null){
+				other.right = new Node<T>(curr);
+				other.right.parent = other;
+				balFactorizer(other.right);
+			}else{
+				insertHelper(curr, other.right);
+			}
+		}else if(curr.compareTo(other.datum) < 0){
+			if(other.left == null){
+				other.left = new Node<T>(curr);
+				other.left.parent = other;
+				balFactorizer(other.left);
+			}else{
+				insertHelper(curr,other.left);
+			}
+		}else{
+			System.out.println("Duplicate");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+	public int height(){//done
+		if(root == null) return -1;
+		return getHeight(root);
+	}
+	
+	public int getHeight(Node<? extends Comparable<?>> n){//versatile method, good for overall height of
+		//tree and for finding balanceFactor
+		
+		//conditionals based on # of children...
+		if(n == null) return 0;
+		if(n.left == null && n.right == null){ //BASE CASE: none
+			return 0;
+		}else if(n.left != null && n.right != null){//both
+			return Math.max(getHeight(n.left) + 1,getHeight(n.right) + 1);
+		}else if(n.right != null){//right
+			return getHeight(n.right) + 1;
+		}else{//left
+			return getHeight(n.left) + 1;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	public int getBF(Node<T> n){
+		int rightHeight = -1, leftHeight = -1;
+		if(n.right == null && (Integer) n.datum == 16) System.out.println("16 right is null");
+		if(n.right == null) rightHeight = 0;
+		else rightHeight = getHeight(n.right) + 1;
+		
+		if(n.left == null && (Integer) n.datum == 16) System.out.println("16 left is null");
+		if(n.left == null) leftHeight = 0;
+		else leftHeight = getHeight(n.left) + 1;
+		if((Integer)n.datum == 16){
+			System.out.println("left height: "+leftHeight+" right height: "+rightHeight);
+		}
+		return rightHeight - leftHeight;
+	}
+
+	public boolean isEmpty(){//done
+		if(root == null) return true;
+		else return false;
+	}
+	
+	
+	
+	
+	
+	/*
+	 * 
+	 * PRINTS
+	 * 
+	 * */
+	
+	
+	public void printTreeByLevel(){
+		Queue<Node> q = new PriorityQueue<Node>();
+		Node temp;
+		
+		if(root == null) return;
+		q.add(root);
+		System.out.println("root is "+root.datum);
+		while (q.peek() != null){
+			temp = q.remove();
+			if (temp.left != null){
+				System.out.println(temp.left.datum);
+				q.add(temp.left);
+			}
+			if (temp.right != null){
+				System.out.println(temp.right.datum);
+				q.add(temp.right);
+			}
+		}
+	}
+	
+	
+	
+	
+
+	public void printParents(){//works
+		Queue<Node<T>> q = new PriorityQueue<Node<T>>();
+		Node<T> temp;
+		
+		if(root == null) return;
+		System.out.println("tree root is "+root.datum);
+		q.add(root);
+		while (q.peek() != null){
+			temp = q.remove();
+			if(temp.parent != null )System.out.println(temp.datum+" parent: "+temp.parent.datum);
+			if(temp.left != null) q.add(temp.left);
+			if(temp.right != null) q.add(temp.right);
+		}
+	}
+	
+	
+	public void printComputedBalFactors(){//works
+		Queue<Node<T>> q = new PriorityQueue<Node<T>>();
+		Node<T> temp;
+		
+		if(root == null) return;
+		q.add((Node<T>) root);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println(temp.datum+" bal factor should be: "+getBF(temp)+" and is: "+temp.balanceFactor);
+			if(temp.left != null) q.add(temp.left);
+			if(temp.right != null) q.add(temp.right);
+		}
+	}
+	
+	public void printBalFactors(){//works
+		Queue<Node<T>> q = new PriorityQueue<Node<T>>();
+		Node<T> temp;
+		
+		if(root == null) return;
+		q.add((Node<T>) root);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println(temp.datum+" bal factor: "+temp.balanceFactor);
+			if(temp.left != null) q.add(temp.left);
+			if(temp.right != null) q.add(temp.right);
+		}
+	}
+
+	
+	public void printHeights(){//works
+		Queue<Node<T>> q = new PriorityQueue<Node<T>>();
+		Node<T> temp;
+		
+		if(root == null) return;
+		q.add((Node<T>) root);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println(temp.datum+" height: "+getHeight(temp));
+			if(temp.left != null) q.add(temp.left);
+			if(temp.right != null) q.add(temp.right);
+		}
+	}
+	
+	
+	
+	public static void main(String[] args)  {
+		//50 25 75 24 35 51 100 23 27 36 52 150 38 125 37 127 126 -1
+		int input;
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		ThreadedAVLTree2<Integer> t = new ThreadedAVLTree2<Integer>();
+		Scanner sc = new Scanner(System.in);
+		while((input = sc.nextInt()) != -1){
+			al.add(input);
+		}
+		
+		sc.close();
+		for(int i = 0; i < al.size(); i++){
+			t.insert(al.get(i));
+		}
+		
+		t.printTreeByLevel();
+		System.out.println("\n\n");
+		//t.printParents();
+		//t.printBalFactors();
+		
+		System.out.println("Height is "+t.height());
+		System.out.println("\n\n");
+		System.out.println("FINAL: ");
+		t.printTreeByLevel();
+		//t.printHeights();
+		//t.printBalFactors();
+		//System.out.println();
+		t.printComputedBalFactors();
+	}
+}
+

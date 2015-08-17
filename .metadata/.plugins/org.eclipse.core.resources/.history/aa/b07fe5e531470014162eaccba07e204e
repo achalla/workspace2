@@ -1,0 +1,32 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Sieve_of_Eratosthenes {
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int max;
+		System.out.println("Enter a max for the prime list: ");
+		max = sc.nextInt();
+		strain(max);
+	}
+	
+	public static int strain (int max){
+		boolean arr[] = new boolean[max+1];//+1 so we can pretend it's 1-based indexing
+		int i, ind = 0, count = 0;
+		i = 2;
+		while(i < arr.length){
+			if(!arr[i]){
+				System.out.println(i);
+				count++;
+				for(ind = 2; ind*i < arr.length; ind++){
+					if(!arr[ind*i]) arr[ind*i] = true;
+				}
+			}
+			i++;
+		}
+		System.out.println("Number of primes in list: "+count);
+		return 0;
+	}
+}

@@ -1,0 +1,18 @@
+
+public class Dog {
+
+	String name;
+	int age;
+	
+	public Dog(){
+		name = "Fido";
+		age = 7;
+	}
+	
+	public static void main(String[] args) {
+
+		Dog d
+
+	}
+
+}

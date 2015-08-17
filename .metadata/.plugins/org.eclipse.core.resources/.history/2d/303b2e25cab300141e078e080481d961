@@ -1,0 +1,27 @@
+//conditionals
+//loops
+
+
+public class Asts {
+	
+	public static void main(String[] args) {
+			//conditionals can be expressions or true/false or boolean variables
+			//booleans variables can be true/false or expressions
+			int a = 3, b = 3;
+			String color = "blue";
+			
+			//while loops
+			while(a > 0){
+				a--;
+				System.out.println(a);
+			}
+			
+			
+			//do-while loop
+			do{
+				b--;
+				System.out.println(b);
+			}while(b > 0);
+	}
+
+}

@@ -1,0 +1,27 @@
+package BinaryTree;
+
+import java.util.ArrayList;
+
+public class BST{
+
+	static Node root;
+	
+	public static BST preToBST(int[] arr){
+		int len = arr.length;
+		root.datum = arr[0];
+		Node temp;
+		for(int i = 1; i < len; i++){
+			if(arr[i] )
+		}
+		return null;
+	}
+	
+	public static BST pTBHelper(){
+		
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

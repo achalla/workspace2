@@ -1,0 +1,20 @@
+package BinaryTree;
+
+import java.util.ArrayList;
+
+public class BST{
+
+	Node root;
+	
+	public static BST createBST(ArrayList<Integer> arr){
+		for(int i: arr){
+			
+		}
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

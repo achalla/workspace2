@@ -1,0 +1,43 @@
+package BinaryTree;
+
+import java.util.ArrayList;
+
+class BST{
+
+	static Node root;
+	
+	static Node preToBST(int[] arr){
+		int len = arr.length;
+		root.datum = arr[0];
+		Node temp = root, p;
+		for(int i = 1; i < len; i++){
+			Node n = new Node();
+			n.datum = arr[i];
+			
+			if(arr[i] < arr[i-1]){
+				temp.left = n;
+				temp = temp.left;
+			}else if(arr[i] > arr[i-1]){
+				temp.right = n;
+				temp = temp.right;
+			}else{
+				System.out.println("DANGER WILL ROBINSON");
+			}
+		}
+		return root;
+	}
+	
+	//public static BST pTBHelper(){
+	//}
+	static void decodeTree(Node r){
+		System.out.println(r.datum);
+		System.out.println(r.left.datum);
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

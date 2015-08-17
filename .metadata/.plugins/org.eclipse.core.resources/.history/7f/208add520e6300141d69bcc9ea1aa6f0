@@ -1,0 +1,96 @@
+package BinaryTree;
+
+import java.util.AbstractQueue;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+
+class BST{
+
+	public static Node root;
+	
+	static Node preToBST(ArrayList<Integer> arr){
+		int len = arr.size();
+		System.out.println("size: "+arr.get(0));
+		root.datum = arr.get(0);
+		Node temp = root, p;
+		/*int i = 0;
+		
+		while(arr.get(i) < root.datum){
+			if()
+		
+		}
+		
+		while(arr.get(i) > root.datum){
+			
+		}
+		*/
+		/*for(int i = 1; i < len; i++){
+			int n = arr.get(i);
+			
+			if(n < arr.get(i-1)){
+				temp.left = new Node(n);
+				temp = temp.left;
+			}else if(n > arr.get(i-1)){
+				temp.right = new Node(n);
+				temp = temp.right;
+			}else{
+				System.out.println("DANGER WILL ROBINSON");
+			}*/
+			
+		}
+		return root;
+	}
+	
+	static void decodeTree(Node n){
+		System.out.println("meow");
+		ArrayList<Node> nArr = new ArrayList<Node>();
+		Queue<Node> q = new PriorityQueue<Node>();
+		Node temp;
+		
+		//if(n.left != null) System.out.println(n.left.datum);
+		//if(n.right != null) System.out.println(n.right.datum);
+		q.add(root);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println(temp.datum);
+			if (temp.left != null){
+				q.add(temp.left);
+			}
+			if (temp.right != null){
+				q.add(temp.right);
+			}
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		int curr = 0;
+		int numElem = sc.nextInt();
+		System.out.println("numELem: "+numElem);
+		for(int i = 0; i < numElem; i++){
+			int a = sc.nextInt();
+			al.add(a);
+			curr = a;
+		}
+		root = new Node(al.get(0));
+		System.out.println(al);
+		System.out.println(al.get(0));
+		/*Node temp2 = */preToBST(al);
+		decodeTree(root);
+		System.out.println("purrr");
+		System.out.println(root.datum);
+		System.out.println(root.left.datum);
+		System.out.println(root.right.datum);
+		System.out.println(root.left.left.datum);
+		System.out.println(root.left.right.datum);
+		System.out.println(root.right.left.datum);
+		System.out.println(root.right.right.datum);
+		
+	}
+
+}

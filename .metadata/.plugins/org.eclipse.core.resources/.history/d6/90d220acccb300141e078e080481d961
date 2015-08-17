@@ -1,0 +1,24 @@
+
+public class Cat {
+	
+	String name;
+	int age;
+	boolean fat;
+	
+	public Cat(){
+		
+		
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		
+		Cat c = new Cat();
+		System.out.println(c.age);
+		System.out.println(c.name);
+		System.out.println(c.fat);
+
+	}
+
+}

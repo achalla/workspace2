@@ -1,0 +1,63 @@
+package BinaryTree;
+
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class BST{
+
+	static Node root;
+	
+	static Node preToBST(int[] arr){
+		int len = arr.length;
+		root.datum = arr[0];
+		Node temp = root, p;
+		for(int i = 1; i < len; i++){
+			Node n = new Node();
+			n.datum = arr[i];
+			
+			if(arr[i] < arr[i-1]){
+				temp.left = n;
+				temp = temp.left;
+			}else if(arr[i] > arr[i-1]){
+				temp.right = n;
+				temp = temp.right;
+			}else{
+				System.out.println("DANGER WILL ROBINSON");
+			}
+		}
+		return root;
+	}
+	
+	//public static BST pTBHelper(){
+	//}
+	static void decodeTree(Node n){
+		ArrayList<Node> nArr = new ArrayList<Node>();
+		Queue<Node> q;
+		Node temp;
+		
+		System.out.println(n.left.datum);
+		System.out.println(n.right.datum);
+		q.add(root);
+		while (q.peek() != null){
+			temp = q.remove();
+			System.out.println(temp);
+			if (temp.left != null){
+				q.add(temp.left)
+			}
+			if (temp.right != null){
+				q.add(temp.right)
+			}
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		while(curr != 0){
+			
+		}
+	}
+
+}

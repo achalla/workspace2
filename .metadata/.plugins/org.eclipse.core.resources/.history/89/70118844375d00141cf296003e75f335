@@ -1,0 +1,38 @@
+
+
+public class SpiralMatrixPrinter2 {
+	
+	public static int currY = 0, currX = 0, startY = 0, startX = 0, endX, endY;
+	
+	public static void traverse(int arr[][]){
+		int n = arr[0].length, m = arr.length;
+		
+		endX = n-1;
+		endY = m-1;
+		
+		
+		while(startY <= endY || startX <= endX){
+			currY = startY;
+			currX = startX;
+				if(currX == endX) System.out.print(arr[startY][currX] + " ");
+				while(currX < endX){
+					System.out.print(arr[startY][currX++] + " ");
+				}
+				while(currY < endY){
+					System.out.print(arr[currY++][endX] + " ");
+				}
+			currX = endX;
+				while(currX > startY){
+					System.out.print(arr[currY][currX--] + " ");
+				}
+			currY = endY;
+				while(currY > startX){
+					System.out.print(arr[currY--][currX] + " ");
+				}
+			startY++; startX++;
+			endX--; endY--;
+			if(startX > endX || startY > endY) break;
+		}
+		return;
+	}
+}

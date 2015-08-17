@@ -1,0 +1,22 @@
+package BinaryTree;
+
+import java.util.ArrayList;
+
+public class BST{
+
+	static Node root;
+	
+	public static BST createBST(ArrayList<Integer> arr){
+		int len = arr.size();
+		root.datum = arr[0];
+		for(int i = 1; i < len; i++){
+			
+		}
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

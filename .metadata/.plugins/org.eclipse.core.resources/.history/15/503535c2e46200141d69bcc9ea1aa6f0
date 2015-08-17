@@ -1,0 +1,17 @@
+package BinaryTree;
+
+class Node {
+
+	public Node left = Singleton.leaf, right = Singleton.leaf, parent = null;
+	public int datum;
+	
+	public Node{
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

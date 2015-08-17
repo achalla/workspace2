@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.bookum.OurInfoActivity" >
+
+  
+    <TextView
+        android:id="@+id/view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/OurPic"
+        android:text="Welcome everybody! We are a team of undergraduate students here at University of Maryland who created BookUm (pronounced Book-em) in the name of sustainability to solve our college classmates' biggest dilemma! Every semester we are conned into buying over-priced textbooks and getting ripped off at the end of the semester when we trade them in. BookUM lets our fellow Terps either put their books for sale directly to our classmates, or swap for another textbook they're willing to trade for. This allows us to not only recycle our books and save resources, but also save MONEY! Our team developed this app for the Daemon Dash Hackathon Competition where we were allotted only 24 hours to come up with the app. We hope you enjoy it and use it to not only better our environment but to save money as well!!! -The RunTime Terrors: Anu, Omid, Joseph and Yash."
+    />
+    
+    <ImageView
+        android:id="@+id/OurPic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/our_team"/>
+    
+</RelativeLayout>

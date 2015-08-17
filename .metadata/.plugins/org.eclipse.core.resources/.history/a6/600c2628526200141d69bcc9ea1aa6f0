@@ -1,0 +1,15 @@
+package BinaryTree;
+
+public class BST{
+
+	Node root;
+	
+	public static BST createBST(int[] arr){
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

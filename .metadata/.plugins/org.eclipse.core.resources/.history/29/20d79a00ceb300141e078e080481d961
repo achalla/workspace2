@@ -1,0 +1,33 @@
+
+public class Cat {
+	
+	String name;
+	int age;
+	boolean fat;
+	
+	public Cat(){ //constructor1
+		name = "Fluffy";
+		age = 10;		
+	}
+	
+	private Cat(String inputName, int inputAge){ //constructor2
+		name = inputName;
+		age = inputAge;
+	}
+	
+	public void birthday(){
+		age++;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		
+		Cat c = new Cat();
+		System.out.println(c.age);
+		System.out.println(c.name);
+		System.out.println(c.fat);
+
+	}
+
+}
