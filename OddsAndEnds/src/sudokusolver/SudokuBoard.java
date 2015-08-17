@@ -30,23 +30,8 @@ class SudokuBoard {
 	}
 	
 	public void loadBoard1(){
-
-		int[][] grid1 = 
-	   {{0,4,0,0,8,0,0,0,0},
-		{0,7,0,3,0,0,0,4,0},
-		{0,9,8,0,7,0,5,0,1},
-		{0,0,9,0,3,4,0,0,8},
-		{0,0,2,0,0,0,9,0,0},
-		{7,0,0,5,9,0,2,0,0},
-		{9,0,7,0,2,0,4,3,0},
-		{0,6,0,0,0,3,0,9,0},
-		{0,0,0,0,6,0,0,8,0}};
-		board = grid1;
-	}
-	
-	public void loadBoard2(){
 		//1-29 on Simply Sudoku
-		int[][] grid2 = 
+		int[][] grid1 = 
 		   {{0,0,0,0,0,0,5,9,1},
 			{9,0,0,8,0,0,6,0,0},
 			{1,0,0,5,0,3,0,7,8},
@@ -56,8 +41,25 @@ class SudokuBoard {
 			{7,4,0,1,0,2,0,0,3},
 			{0,0,8,0,0,6,0,0,9},
 			{5,2,6,0,0,0,0,0,0}};
+		board = grid1;
+	}
+	
+	public void loadBoard2(){
+
+		int[][] grid2 = 
+	   {{0,4,0,0,8,0,0,0,0},
+		{0,7,0,3,0,0,0,4,0},
+		{0,9,8,0,7,0,5,0,1},
+		{0,0,9,0,3,4,0,0,8},
+		{0,0,2,0,0,0,9,0,0},
+		{7,0,0,5,9,0,2,0,0},
+		{9,0,7,0,2,0,4,3,0},
+		{0,6,0,0,0,3,0,9,0},
+		{0,0,0,0,6,0,0,8,0}};
 		board = grid2;
 	}
+	
+	
 	
 	private boolean contain(String request, int location, int value){
 		switch(request){
@@ -76,7 +78,7 @@ class SudokuBoard {
 		}
 	}
 	
-	private boolean containsInRow(int location, int value){
+	boolean containsInRow(int location, int value){
 		if(location < 0 || location > NUMBER_OF_ROWS-1) throw new IllegalArgumentException();
 		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
 		for(int i:board[location]){
@@ -85,7 +87,7 @@ class SudokuBoard {
 		return false;
 	}
 	
-	private boolean containsInCol(int location, int value){
+	boolean containsInCol(int location, int value){
 		if(location < 0 || location > NUMBER_OF_COLUMNS-1) throw new IllegalArgumentException();
 		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
 		for(int i = 0;i<NUMBER_OF_ROWS;i++){
@@ -173,7 +175,7 @@ class SudokuBoard {
 
 	public static void main(String[] args) {
 		SudokuBoard sb = new SudokuBoard();
-		sb.loadBoard2();
+		sb.loadBoard1();
 //		set(4,0,-1);
 		sb.printBoardBy3x3();
 		System.out.println(sb.containsInRow(0,5));
