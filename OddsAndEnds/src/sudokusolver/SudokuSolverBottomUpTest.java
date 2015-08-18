@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SudokuBoardTest {
-	SudokuBoard sb;
+public class SudokuSolverBottomUpTest {
+	SudokuSolverBottomUp sb;
 
 	@Before
 	public void initialize(){
-		sb = SudokuBoard.getNewBoard();
+		sb = SudokuSolverBottomUp.getNewBoard();
 		sb.loadBoard1();
 	}
 	

@@ -1,7 +1,10 @@
 package sudokusolver;
+/*
+ * Created  8/17/15
+ * SCRAPPED 8/18/15 for Top-Down approach
+ */
 
-
-class SudokuBoard {
+class SudokuSolverBottomUp {
 	/*
 	 * Some terminology: 
 	 * I have called each of the horizontal strips of 1-9 numbers on the board a "row"
@@ -17,28 +20,22 @@ class SudokuBoard {
 	 
 	 *
 	 *Personal notes: 
-	 *Might hardcode in 9x9 constants if this gets too obnoxious
 	 *Need to address TODOs
-	 *Need to consider another method of solving the board:
+	 *consider another method of solving the board:
 	 *whittle down possibilities from each cell 
 	 *(eliminating incorrect entries instead of building up correct entries)
 	 */
 	private static int[][] board;
-	private final static int NUMBER_OF_ROWS = 9;
-	private final static int NUMBER_OF_COLUMNS = 9;
-	private final static int NUMBER_OF_BLOCKS = 9;
-	private final static int VALUE_MAX = 9;
-	private final static int VALUE_MIN = 1;
-	private final static int EMPTY_VALUE = 0;
-	private final static int BLOCK_LENGTH = 3;
 	private final static int[][] blockMap = {{0,1,2},{3,4,5},{6,7,8}};
+	private final static int[][] gridMap = {{0,0},{0,3},{0,6},{3,0},{3,3},{3,6},{6,0},{6,3},{6,6}};
 	
-	private SudokuBoard(){
-		board = new int[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
+	
+	private SudokuSolverBottomUp(){
+		board = new int[9][9];
 	}
 	
-	public static SudokuBoard getNewBoard(){
-		return new SudokuBoard();
+	public static SudokuSolverBottomUp getNewBoard(){
+		return new SudokuSolverBottomUp();
 	}
 	
 	public void loadBoard1(){
@@ -94,9 +91,9 @@ class SudokuBoard {
 	 * Returns col index
 	 */
 	int containsInRow(int row, int value){
-		if(row < 0 || row > NUMBER_OF_ROWS-1) throw new IllegalArgumentException();
-		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
-		for(int i = 0;i<NUMBER_OF_COLUMNS;i++){
+		if(row < 0 || row > 9-1) throw new IllegalArgumentException();
+		if(value < 1 || value > 9) throw new IllegalArgumentException();
+		for(int i = 0;i<9;i++){
 			if(board[row][i] == value) return i;
 		}
 		return -1;
@@ -106,9 +103,9 @@ class SudokuBoard {
 	 * Returns row index
 	 */
 	int containsInCol(int col, int value){
-		if(col < 0 || col > NUMBER_OF_COLUMNS-1) throw new IllegalArgumentException();
-		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
-		for(int i = 0;i<NUMBER_OF_ROWS;i++){
+		if(col < 0 || col > 9-1) throw new IllegalArgumentException();
+		if(value < 1 || value > 9) throw new IllegalArgumentException();
+		for(int i = 0;i<9;i++){
 			if(board[i][col] == value) return i;
 		}
 		return -1;
@@ -120,16 +117,16 @@ class SudokuBoard {
 	}
 	
 	private void check3x3(int lat, int lon, int value){
-		if(lat < 0 || lat > BLOCK_LENGTH-1) throw new IllegalArgumentException();
-		if(lon < 0 || lon > BLOCK_LENGTH-1) throw new IllegalArgumentException();
-		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
+		if(lat < 0 || lat > 3-1) throw new IllegalArgumentException();
+		if(lon < 0 || lon > 3-1) throw new IllegalArgumentException();
+		if(value < 1 || value > 9) throw new IllegalArgumentException();
 	}
 
 	
 	
 	
 	private void checkAllRows(){
-		for(int i = 0; i < NUMBER_OF_BLOCKS;i++){
+		for(int i = 0; i < 9;i++){
 			
 		}
 	}
@@ -188,8 +185,8 @@ class SudokuBoard {
 	int getTripletFromRowAndGrid(int row, int grid, int value){
 		int a,b;
 		//from grid, let's get the cell coordinate
-		for(int i = 0; i<BLOCK_LENGTH;i++){
-			for(int j=0;j<BLOCK_LENGTH;j++){
+		for(int i = 0; i<3;i++){
+			for(int j=0;j<3;j++){
 				if(blockMap[i][j]==grid){//this is it!
 					a = row;
 					b = j*3;
@@ -244,7 +241,7 @@ class SudokuBoard {
 		int rowA, rowB, rowC, gridA, gridB, gridC, count=0;
 		int contA, contB, contC, contSum;
 		int oddGrid, grid, row;
-		rowA = lat*BLOCK_LENGTH;
+		rowA = lat*3;
 		rowB = rowA+1;
 		rowC = rowA+2;
 		
@@ -270,14 +267,14 @@ class SudokuBoard {
 		
 		oddGrid = oddOneOut(gridA,gridB,gridC);
 		
-		grid = lat*BLOCK_LENGTH+oddGrid;
+		grid = lat*3+oddGrid;
 		
 		int oddRow = oddOneOut(contA,contB,contC);
 		System.out.println("oddGrid is "+oddGrid);
 		System.out.println("oddRow is "+oddRow);
 		System.out.println("row A: "+rowA+" rowB: "+rowB+" rowC: "+rowC);
 		row = rowA+oddRow;
-		grid = rowA+oddGrid;// this is because rowA = lat*BLOCK_LENGTH
+		grid = rowA+oddGrid;// this is because rowA = lat*3
 		System.out.println("oddRow is "+oddRow+" and grid is "+grid);
 		System.out.println("row is: "+row);
 		
@@ -291,8 +288,8 @@ class SudokuBoard {
 	 * returns grid number if value is there, else -1 if not
 	 */
 	int checkRow(int row, int value){
-		if(row < 0 || row > NUMBER_OF_ROWS-1) throw new IllegalArgumentException();
-		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
+		if(row < 0 || row > 9-1) throw new IllegalArgumentException();
+		if(value < 1 || value > 9) throw new IllegalArgumentException();
 
 		return -1;
 	}
@@ -308,8 +305,8 @@ class SudokuBoard {
 	}
 
 	private void checkCol(int col, int value){
-		if(col < VALUE_MIN || col > NUMBER_OF_COLUMNS) throw new IllegalArgumentException();
-		if(value < VALUE_MIN || value > VALUE_MAX) throw new IllegalArgumentException();
+		if(col < 1 || col > 9) throw new IllegalArgumentException();
+		if(value < 1 || value > 9) throw new IllegalArgumentException();
 
 	}
 
@@ -332,26 +329,20 @@ class SudokuBoard {
 		return board[row][col];
 	}
 	
-	void printBoardBy3x3(){
-		/*
-		 * Intentionally written not to be hard-coded for 9x9 boards
-		 */
-		int numRows,numCols;
-		numRows = board.length;
-		numCols = board[0].length;
-		for(int i = 0; i<numRows;i++){
-			for(int j = 0;j<numCols;j++){
+	public void printBoardBy3x3(){
+		for(int i = 0; i<9;i++){
+			for(int j = 0;j<9;j++){
 				System.out.print(board[i][j]);
-				if(j == numCols-1) continue;
+				if(j == 8) continue;
 				else if(j%3 == 2) System.out.print(" | ");
 				else System.out.print(" ");
 			}			
 			System.out.println();
-			if(i%3==2 && i!=numRows-1) System.out.println("---------------------");
+			if(i%3==2 && i!=8) System.out.println("---------------------");
 		}
 	}
 	
-	private static class BadAssumptionException extends RuntimeException{
+	static class BadAssumptionException extends RuntimeException{
 		public BadAssumptionException () {
 
 	    }
@@ -370,7 +361,7 @@ class SudokuBoard {
 	}
 
 	public static void main(String[] args) {
-		SudokuBoard sb = new SudokuBoard();
+		SudokuSolverBottomUp sb = new SudokuSolverBottomUp();
 		sb.loadBoard1();
 //		set(4,0,-1);
 //		sb.printBoardBy3x3();
