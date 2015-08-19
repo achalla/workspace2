@@ -26,22 +26,35 @@ public class SudokuSolverTopDownTest {
 	
 	@Test
 	public void populateHintsTest(){
-		int[] temp = {-1,1,1,1,1,1,1,1,1,1};
+		int[] temp = {-1,1,1,1,1,1,1,1,1,100};
 		assert(Arrays.equals(sb.hints[0][0],temp));
 		int[] temp2 = {-1,1,1,1,1,1,1,1,1,1};
-		assert(Arrays.equals(sb.hints[3][6],temp));
+		assert(Arrays.equals(sb.hints[3][6],temp2));
 		int[] temp3 = {2,0,0,0,1,0,0,1,0,0};
 		assert(Arrays.equals(sb.hints[8][8],temp3));
 	}
 	
+	@Test
+	public void numInvalidsTest(){
+		assertEquals(sb.findNegativeOneOfThree(1,2,-1),2);
+		assertEquals(sb.findNonpositiveOneOfThree(1,0,1),1);
+		assertEquals(sb.findValidOneOfThree(0,0,1),2);
+		assertEquals(sb.findValidOneOfThree(5,-1,-5),0);
+		assertEquals(sb.numNonpositives(0,0,0),3);
+		assertEquals(sb.numNonpositives(-5,5,-5),2);
+		assertEquals(sb.numNonpositives(0,-1,10),2);
+		assertEquals(sb.numNonpositives(1,1,1),0);
+		assertEquals(sb.numNonpositives(12,0,24),1);
+		
+	}
 	
-	
-	/*@Test
+	@Test
 	public void containsInRowTest() {
 		assertEquals(sb.containsInRow(0,5),6);
 		assertEquals(sb.containsInRow(0,2),-1);
 		assertEquals(sb.containsInRow(5,8),5);
 		assertEquals(sb.containsInRow(5,1),-1);
+		assertEquals(sb.containsInRow(1,9),0);
 	}
 	
 	@Test
@@ -67,7 +80,7 @@ public class SudokuSolverTopDownTest {
 		assertEquals(sb.getGrid(3,7),5);
 		assertEquals(sb.getGrid(8,8),8);
 	}
-	
+	/*
 	@Test
 	public void basicCheckLatTest() {
 		sb.checkLat(0,9);

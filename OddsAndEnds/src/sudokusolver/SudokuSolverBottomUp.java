@@ -342,7 +342,7 @@ class SudokuSolverBottomUp {
 		}
 	}
 	
-	static class BadAssumptionException extends RuntimeException{
+	 static class BadAssumptionException extends RuntimeException{
 		public BadAssumptionException () {
 
 	    }
