@@ -355,10 +355,9 @@ void printHintsInGrid(){
 	
 	//want to make this recursive next
 	void solve(){
+		System.out.println("Original Board:");
 		printBoardBy3x3();
-		populateHints();
-//		printHints();
-//		do{
+		do{
 			changesMadeTotal=false;
 			do{
 				changesMade = false;
@@ -371,10 +370,25 @@ void printHintsInGrid(){
 				System.out.println("FIND UNIQUES IN GRIDS");
 				findUniquesInGrids();
 			}while(changesMade);
-//		}while(changesMadeTotal);
+		}while(changesMadeTotal);
 	}
 	
-	void fixSolve(){
+	void solveDiagnostic2(){
+		do{
+			changesMadeTotal=false;
+			do{
+				changesMade=false;
+				fillInSolos();
+			}while(changesMade);
+
+			do{
+				changesMade=false;
+				findUniquesInGrids();
+			}while(changesMade);
+		}while(changesMadeTotal);
+	}
+	
+	void solveDiagnostic(){
 		printBoardBy3x3();
 		printHintQuantitiesBy3x3();
 		printHints(3,1);
@@ -396,13 +410,15 @@ void printHintsInGrid(){
 
 	}
 
+
 	
 	public static void main(String[] args) {
 		SudokuSolverTopDown2 ss = new SudokuSolverTopDown2();
 		ss.loadBoard(1);
 		ss.printBoardBy3x3();
-		ss.fixSolve();
-//		ss.solve();
-		
+//		ss.solveDiagnostic();
+//		ss.solveDiagnostic2();
+		ss.solve();
+		ss.printBoardBy3x3();		
 	}
 }
