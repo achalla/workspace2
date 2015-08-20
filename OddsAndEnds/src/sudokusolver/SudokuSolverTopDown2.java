@@ -293,7 +293,7 @@ void printHintsInGrid(){
 					set(i,j,findTheOneOfNine(i,j));
 					System.out.println("set ("+i+","+j+") to "+board[i][j]);
 					printBoardBy3x3();
-					printHintQuantitiesBy3x3();
+//					printHintQuantitiesBy3x3();
 //					printHints();
 				}
 			}
@@ -303,6 +303,7 @@ void printHintsInGrid(){
 	void findUniquesInGrids(){
 		for(int gridInd = 0;gridInd<9;gridInd++){//every grid 0-8
 			for(int valInd = 1;valInd<=9;valInd++){//every value 1-9
+//				System.out.println("About to check grid "+gridInd+" for unique "+valInd);
 				checkGridForUniques(gridInd,valInd);
 			}
 		}
@@ -310,11 +311,12 @@ void printHintsInGrid(){
 	
 	void checkGridForUniques(int grid, int value){
 		int startRow, startCol, count = 0,x=-1,y=-1;
-		startRow = grid/3;
-		startCol = grid%3;
+		startRow = grid/3*3;
+		startCol = grid%3*3;//fixed
 		
 		for(int i=startRow;i<startRow+3;i++){
 			for(int j=startCol;j<startCol+3;j++){
+//				if(i==6 && j==4) printHints(i,j);
 				if(hints[i][j][0] == 0 || board[i][j]!=0) continue;
 				if(hints[i][j][value] == 1){
 					count++;
@@ -325,10 +327,14 @@ void printHintsInGrid(){
 		}
 
 		if(count == 1){
+			System.out.println("count: 1"+" x,y: "+x+","+y);
 //			printHints(x,y);
-			set(x,y,value);
-			System.out.println("Set ("+x+","+y+") to "+value);
-			printBoardBy3x3();
+			if(board[x][y]==0){
+				set(x,y,value);
+
+				System.out.println("Set ("+x+","+y+") to "+value);
+//				printBoardBy3x3();
+			}
 		}
 	}
 	
@@ -352,18 +358,42 @@ void printHintsInGrid(){
 		printBoardBy3x3();
 		populateHints();
 //		printHints();
-		do{
+//		do{
 			changesMadeTotal=false;
 			do{
 				changesMade = false;
+				System.out.println("FILL IN SOLOS");
 				fillInSolos();
 			}while(changesMade);
 
 			do{
 				changesMade = false;
+				System.out.println("FIND UNIQUES IN GRIDS");
 				findUniquesInGrids();
 			}while(changesMade);
-		}while(changesMadeTotal);
+//		}while(changesMadeTotal);
+	}
+	
+	void fixSolve(){
+		printBoardBy3x3();
+		printHintQuantitiesBy3x3();
+		printHints(3,1);
+		fillInSolos();
+		printHintQuantitiesBy3x3();
+		printHints(3,1);
+
+		findUniquesInGrids();
+		findUniquesInGrids();
+		findUniquesInGrids();
+		findUniquesInGrids();
+		findUniquesInGrids();
+		findUniquesInGrids();
+		System.out.println("START HERE");
+		changesMade=false;
+		findUniquesInGrids();
+		System.out.println(changesMade);
+		printBoardBy3x3();
+
 	}
 
 	
@@ -371,24 +401,8 @@ void printHintsInGrid(){
 		SudokuSolverTopDown2 ss = new SudokuSolverTopDown2();
 		ss.loadBoard(1);
 		ss.printBoardBy3x3();
-		ss.printHintQuantitiesBy3x3();
-		ss.printHints(3,1);
-		ss.fillInSolos();
-		System.out.println("End first fill in solos");
-		ss.printHintQuantitiesBy3x3();
-		ss.printHints(3,1);
-//		ss.fillInSolos();
-
-		
-//		ss.findUniquesInGrids();
-		
-		
-//		ss.printBoardBy3x3();
-		
-//		ss.printHintsInGrid();
-//		ss.printHintQuantitiesBy3x3();
-		
-		
+		ss.fixSolve();
+//		ss.solve();
 		
 	}
 }
