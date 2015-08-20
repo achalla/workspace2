@@ -60,6 +60,12 @@ public class SudokuSolverTopDown2 {
 		case 1:
 			loadBoard1();
 			break;
+		case 2:
+			loadBoard2();
+			break;
+		case 29:
+			loadBoard29();
+			break;
 		default:
 			throw new IllegalArgumentException();
 		}
@@ -68,6 +74,40 @@ public class SudokuSolverTopDown2 {
 	}
 	
 	public void loadBoard1(){
+		//Board "1-1" on Simply Sudoku
+		int[][] grid1 = 
+		   {{3,0,0,0,0,0,6,9,7},
+			{0,0,0,2,0,0,0,5,0},
+			{5,9,4,0,3,0,0,0,0},
+			{1,8,0,0,0,2,0,0,0},
+			{0,0,9,4,0,3,2,0,0},
+			{0,0,0,1,0,0,0,6,8},
+			{0,0,0,0,4,0,7,1,6},
+			{0,3,0,0,0,8,0,0,0},
+			{9,7,1,0,0,0,0,0,3}};
+		board = grid1;
+		fillHints();
+		populateHints();
+	}
+	
+	public void loadBoard2(){
+		//Board "1-2" on Simply Sudoku
+		int[][] grid1 = 
+		   {{0,0,0,0,0,6,0,0,3},
+			{6,0,5,3,7,0,0,8,0},
+			{0,0,0,5,1,0,0,6,0},
+			{0,0,4,7,0,0,8,0,0},
+			{0,6,9,0,0,0,3,4,0},
+			{0,0,8,0,0,5,2,0,0},
+			{0,5,0,0,6,9,0,0,0},
+			{0,8,0,0,3,1,7,0,4},
+			{2,0,0,8,0,0,0,0,0}};
+		board = grid1;
+		fillHints();
+		populateHints();
+	}
+	
+	public void loadBoard29(){
 		//Board "1-29" on Simply Sudoku
 		int[][] grid1 = 
 		   {{0,0,0,0,0,0,5,9,1},
@@ -80,6 +120,25 @@ public class SudokuSolverTopDown2 {
 			{0,0,8,0,0,6,0,0,9},
 			{5,2,6,0,0,0,0,0,0}};
 		board = grid1;
+		fillHints();
+		populateHints();
+	}
+	
+	
+	
+	public void loadBoardX(){
+		//Board ??? on Simply Sudoku
+		int[][] grid2 = 
+			   {{0,4,0,0,8,0,0,0,0},
+				{0,7,0,3,0,0,0,4,0},
+				{0,9,8,0,7,0,5,0,1},
+				{0,0,9,0,3,4,0,0,8},
+				{0,0,2,0,0,0,9,0,0},
+				{7,0,0,5,9,0,2,0,0},
+				{9,0,7,0,2,0,4,3,0},
+				{0,6,0,0,0,3,0,9,0},
+				{0,0,0,0,6,0,0,8,0}};
+				board = grid2;
 		fillHints();
 		populateHints();
 	}
@@ -371,6 +430,8 @@ void printHintsInGrid(){
 				findUniquesInGrids();
 			}while(changesMade);
 		}while(changesMadeTotal);
+		System.out.println("Final:");
+		printBoardBy3x3();
 	}
 	
 	void solveDiagnostic2(){
@@ -410,15 +471,24 @@ void printHintsInGrid(){
 
 	}
 
-
+void doOnlySolos(){
+	do{
+		changesMade=false;
+		fillInSolos();
+	}while(changesMade);
+}
 	
 	public static void main(String[] args) {
 		SudokuSolverTopDown2 ss = new SudokuSolverTopDown2();
-		ss.loadBoard(1);
-		ss.printBoardBy3x3();
-//		ss.solveDiagnostic();
-//		ss.solveDiagnostic2();
+		ss.loadBoard(2);
 		ss.solve();
-		ss.printBoardBy3x3();		
+/*		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+		ss.loadBoard(29);
+		ss.printBoardBy3x3();
+		ss.solve();*/
+//		ss.doOnlySolos();
+//		System.out.println("NEXT ITERATION");
+//		ss.doOnlySolos();
+//		ss.printBoardBy3x3();
 	}
 }
