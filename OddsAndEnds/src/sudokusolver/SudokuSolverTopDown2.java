@@ -9,12 +9,6 @@ public class SudokuSolverTopDown2 {
 	 * I have called each of the vertical strips of 1-9 numbers on the board a "column" (abbreviated "col")
 	 * I have called each of the 3 by 3 grids that must contain 1-9 a "block," or a "3x3" 
 	 * I have called each of the 81 individual units containing numbers on the board a "cell"
-	 * 
-	 * I have called each of the 3 groups of 3 horizontal rows a "latitude" (abbreviated "lat")
-	 * I have called each of the 3 groups of vertical columns a "longitude" (abbreviated "lon" --
-	 * 		 "long" isn't gonna work as a variable name)
-	 * 
-	 * I have called each of the 3 horizontal or vertical strips of three cells within a 3x3 a "triplet"
 	 */
 
 
@@ -48,8 +42,6 @@ public class SudokuSolverTopDown2 {
 			}
 		}
 	}
-	
-
 	
 	public static SudokuSolverTopDown2 getNewBoard(){
 		return new SudokuSolverTopDown2();
@@ -124,10 +116,8 @@ public class SudokuSolverTopDown2 {
 		populateHints();
 	}
 	
-	
-	
 	public void loadBoardX(){
-		//Board ??? on Simply Sudoku
+		//Board (???) on Simply Sudoku
 		int[][] grid2 = 
 			   {{0,4,0,0,8,0,0,0,0},
 				{0,7,0,3,0,0,0,4,0},
@@ -163,7 +153,6 @@ public class SudokuSolverTopDown2 {
 		System.out.println();
 	}
 	
-	//TODO
 	void updateHintsRow(int row, int value){
 		for(int j=0;j<9;j++){
 			if(hints[row][j][value]> 0){
@@ -172,8 +161,7 @@ public class SudokuSolverTopDown2 {
 			}
 		}
 	}
-	
-	//TODO
+
 	void updateHintsCol(int col, int value){
 		for(int i=0;i<9;i++){
 			if(hints[i][col][value] != 0){
@@ -183,7 +171,6 @@ public class SudokuSolverTopDown2 {
 		}
 	}
 	
-	//TODO
 	void updateHintsGrid(int grid, int value){
 		int startRow, startCol;
 		startRow = grid/3*3;
@@ -204,28 +191,26 @@ public class SudokuSolverTopDown2 {
 		updateHintsRow(row,value);
 		updateHintsCol(col,value);
 		updateHintsGrid(grid,value);
-//		printHints();
-//		printHintQuantitiesBy3x3();
 	}
 
-void printHintsInGrid(){
-	for(int i=0;i<9;i++){
-		if(i==3||i==6){
-			System.out.print("----------------------------------------------------------------");
-			System.out.print("----------------------------------------------------------------");
-			System.out.println("----------------------------------------------------------------");
-		}
-		for(int j=0;j<9;j++){
-			System.out.print("{");
-			for(int k=1;k<=9;k++){
-				System.out.print(hints[i][j][k]+" ");
+	void printHintsInGrid(){
+		for(int i=0;i<9;i++){
+			if(i==3||i==6){
+				System.out.print("----------------------------------------------------------------");
+				System.out.print("----------------------------------------------------------------");
+				System.out.println("----------------------------------------------------------------");
 			}
-			System.out.print("} ");
-			if(j==2||j==5) System.out.print("| ");
+			for(int j=0;j<9;j++){
+				System.out.print("{");
+				for(int k=1;k<=9;k++){
+					System.out.print(hints[i][j][k]+" ");
+				}
+				System.out.print("} ");
+				if(j==2||j==5) System.out.print("| ");
+			}
+			System.out.println();
 		}
-		System.out.println();
 	}
-}
 	
 	void populateHints(){
 		for(int i=0;i<9;i++){
@@ -246,9 +231,6 @@ void printHintsInGrid(){
 		}
 	}
 	
-	//TODO void updateHints
-	//(in row, in col, in grid
-	
 	void printHints(){
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
@@ -266,7 +248,7 @@ void printHintsInGrid(){
 	}
 	
 	void printHintsQuantities(){
-		System.out.println("HINT QUANTITIES:");
+		System.out.println("Hint Quantities:");
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				System.out.print(hints[i][j][0]+" ");
@@ -275,7 +257,7 @@ void printHintsInGrid(){
 	}
 	
 	public void printHintQuantitiesBy3x3(){
-		System.out.println("HINT QUANTITIES:");
+		System.out.println("Hint Quantities:");
 		for(int i = 0; i<9;i++){
 			for(int j = 0;j<9;j++){
 				System.out.print(hints[i][j][0]);
@@ -288,8 +270,7 @@ void printHintsInGrid(){
 		}
 		System.out.println();
 	}
-	
-	
+
 	int findTheOneOfNine(int i, int j){
 		for(int k = 1; k<10;k++){
 			if(hints[i][j][k] != 0) return k;
@@ -297,7 +278,9 @@ void printHintsInGrid(){
 		throw new BadAssumptionException();
 	}
 	
-	
+	/*
+	 * Returns column index
+	 */
 	int containsInRow(int row, int value){
 		if(row < 0 || row > 8) throw new IllegalArgumentException();
 		if(value < 1 || value > 9) throw new IllegalArgumentException();
@@ -352,8 +335,6 @@ void printHintsInGrid(){
 					set(i,j,findTheOneOfNine(i,j));
 					System.out.println("set ("+i+","+j+") to "+board[i][j]);
 					printBoardBy3x3();
-//					printHintQuantitiesBy3x3();
-//					printHints();
 				}
 			}
 		}
@@ -362,7 +343,6 @@ void printHintsInGrid(){
 	void findUniquesInGrids(){
 		for(int gridInd = 0;gridInd<9;gridInd++){//every grid 0-8
 			for(int valInd = 1;valInd<=9;valInd++){//every value 1-9
-//				System.out.println("About to check grid "+gridInd+" for unique "+valInd);
 				checkGridForUniques(gridInd,valInd);
 			}
 		}
@@ -371,11 +351,10 @@ void printHintsInGrid(){
 	void checkGridForUniques(int grid, int value){
 		int startRow, startCol, count = 0,x=-1,y=-1;
 		startRow = grid/3*3;
-		startCol = grid%3*3;//fixed
+		startCol = grid%3*3;
 		
 		for(int i=startRow;i<startRow+3;i++){
 			for(int j=startCol;j<startCol+3;j++){
-//				if(i==6 && j==4) printHints(i,j);
 				if(hints[i][j][0] == 0 || board[i][j]!=0) continue;
 				if(hints[i][j][value] == 1){
 					count++;
@@ -386,13 +365,10 @@ void printHintsInGrid(){
 		}
 
 		if(count == 1){
-			System.out.println("count: 1"+" x,y: "+x+","+y);
-//			printHints(x,y);
+//			System.out.println("count: 1"+" x,y: "+x+","+y);
 			if(board[x][y]==0){
 				set(x,y,value);
-
-				System.out.println("Set ("+x+","+y+") to "+value);
-//				printBoardBy3x3();
+//				System.out.println("Set ("+x+","+y+") to "+value);
 			}
 		}
 	}
@@ -411,8 +387,6 @@ void printHintsInGrid(){
 		}
 	}
 	
-	
-	//want to make this recursive next
 	void solve(){
 		System.out.println("Original Board:");
 		printBoardBy3x3();
@@ -420,13 +394,11 @@ void printHintsInGrid(){
 			changesMadeTotal=false;
 			do{
 				changesMade = false;
-				System.out.println("FILL IN SOLOS");
 				fillInSolos();
 			}while(changesMade);
 
 			do{
 				changesMade = false;
-				System.out.println("FIND UNIQUES IN GRIDS");
 				findUniquesInGrids();
 			}while(changesMade);
 		}while(changesMadeTotal);
@@ -471,24 +443,16 @@ void printHintsInGrid(){
 
 	}
 
-void doOnlySolos(){
-	do{
-		changesMade=false;
-		fillInSolos();
-	}while(changesMade);
-}
+	void doOnlySolos(){
+		do{
+			changesMade=false;
+			fillInSolos();
+		}while(changesMade);
+	}
 	
 	public static void main(String[] args) {
 		SudokuSolverTopDown2 ss = new SudokuSolverTopDown2();
 		ss.loadBoard(2);
 		ss.solve();
-/*		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
-		ss.loadBoard(29);
-		ss.printBoardBy3x3();
-		ss.solve();*/
-//		ss.doOnlySolos();
-//		System.out.println("NEXT ITERATION");
-//		ss.doOnlySolos();
-//		ss.printBoardBy3x3();
 	}
 }
