@@ -16,14 +16,14 @@ public class SudokuSolverTopDown2 {
 	 * 
 	 * I have called each of the 3 horizontal or vertical strips of three cells within a 3x3 a "triplet"
 	 */
-	
+
 
 	int[][] board;
 	int[][][] hints;
 	boolean changesMade, changesMadeTotal;
-	
+
 	private final static int[][] blockMap = {{0,1,2},{3,4,5},{6,7,8}};
-	
+
 	private SudokuSolverTopDown2(){
 		board = new int[9][9];
 		hints = new int[9][9][10];
@@ -33,13 +33,17 @@ public class SudokuSolverTopDown2 {
 		 * Maybe index 0 could keep a count of how many trues are left in array
 		 */
 	}
-	
+
 	void fillHints(){
 		for(int i = 0; i<9;i++){
 			for(int j=0;j<9;j++){
 				for(int k=0;k<10;k++){
-					if(k==0) hints[i][j][k] = 9;
-					else hints[i][j][k] = 1;
+					if(board[i][j]!=0){
+						hints[i][j][k]=0;
+					}else{
+						if(k==0) hints[i][j][k] = 9;
+						else hints[i][j][k] = 1;
+					}
 				}
 			}
 		}
@@ -103,7 +107,7 @@ public class SudokuSolverTopDown2 {
 	//TODO
 	void updateHintsRow(int row, int value){
 		for(int j=0;j<9;j++){
-			if(hints[row][j][value] != 0){
+			if(hints[row][j][value]> 0){
 				hints[row][j][value] = 0;
 				hints[row][j][0]--;
 			}
@@ -123,8 +127,9 @@ public class SudokuSolverTopDown2 {
 	//TODO
 	void updateHintsGrid(int grid, int value){
 		int startRow, startCol;
-		startRow = grid/3;
-		startCol = grid%3;
+		startRow = grid/3*3;
+		startCol = grid%3*3;
+		System.out.println("grid: "+grid+" startRow: "+startRow+" startCol: "+startCol);
 		for(int i=startRow;i<startRow+3;i++){
 			for(int j=startCol;j<startCol+3;j++){
 				if(hints[i][j][value] != 0){
@@ -136,12 +141,32 @@ public class SudokuSolverTopDown2 {
 	}
 	
 	void updateHints(int row, int col, int grid, int value){
+		updateHintsForFilledInValue(row,col);
 		updateHintsRow(row,value);
 		updateHintsCol(col,value);
 		updateHintsGrid(grid,value);
+//		printHints();
+//		printHintQuantitiesBy3x3();
 	}
 
-
+void printHintsInGrid(){
+	for(int i=0;i<9;i++){
+		if(i==3||i==6){
+			System.out.print("----------------------------------------------------------------");
+			System.out.print("----------------------------------------------------------------");
+			System.out.println("----------------------------------------------------------------");
+		}
+		for(int j=0;j<9;j++){
+			System.out.print("{");
+			for(int k=1;k<=9;k++){
+				System.out.print(hints[i][j][k]+" ");
+			}
+			System.out.print("} ");
+			if(j==2||j==5) System.out.print("| ");
+		}
+		System.out.println();
+	}
+}
 	
 	void populateHints(){
 		for(int i=0;i<9;i++){
@@ -169,7 +194,7 @@ public class SudokuSolverTopDown2 {
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				System.out.println("For ("+i+","+j+"):");
-				if(hints[i][j][0]==0) {
+				if(hints[i][j][0]==0 ||(board[i][j]!=0)) {
 					System.out.println("["+board[i][j]+"]");
 					continue;
 				}
@@ -180,6 +205,31 @@ public class SudokuSolverTopDown2 {
 			}
 		}
 	}
+	
+	void printHintsQuantities(){
+		System.out.println("HINT QUANTITIES:");
+		for(int i=0;i<9;i++){
+			for(int j=0;j<9;j++){
+				System.out.print(hints[i][j][0]+" ");
+			}
+		}
+	}
+	
+	public void printHintQuantitiesBy3x3(){
+		System.out.println("HINT QUANTITIES:");
+		for(int i = 0; i<9;i++){
+			for(int j = 0;j<9;j++){
+				System.out.print(hints[i][j][0]);
+				if(j == 8) continue;
+				else if(j%3 == 2) System.out.print(" | ");
+				else System.out.print(" ");
+			}			
+			System.out.println();
+			if(i%3==2 && i!=8) System.out.println("---------------------");
+		}
+		System.out.println();
+	}
+	
 	
 	int findTheOneOfNine(int i, int j){
 		for(int k = 1; k<10;k++){
@@ -243,6 +293,8 @@ public class SudokuSolverTopDown2 {
 					set(i,j,findTheOneOfNine(i,j));
 					System.out.println("set ("+i+","+j+") to "+board[i][j]);
 					printBoardBy3x3();
+					printHintQuantitiesBy3x3();
+//					printHints();
 				}
 			}
 		}
@@ -263,7 +315,7 @@ public class SudokuSolverTopDown2 {
 		
 		for(int i=startRow;i<startRow+3;i++){
 			for(int j=startCol;j<startCol+3;j++){
-				if(hints[i][j][0] == 0) continue;
+				if(hints[i][j][0] == 0 || board[i][j]!=0) continue;
 				if(hints[i][j][value] == 1){
 					count++;
 					x=i;
@@ -273,7 +325,10 @@ public class SudokuSolverTopDown2 {
 		}
 
 		if(count == 1){
+//			printHints(x,y);
 			set(x,y,value);
+			System.out.println("Set ("+x+","+y+") to "+value);
+			printBoardBy3x3();
 		}
 	}
 	
@@ -285,12 +340,18 @@ public class SudokuSolverTopDown2 {
 		updateHints(row,col,getGrid(row,col),value);
 	}
 	
+	void updateHintsForFilledInValue(int row, int col){
+		for(int k=0;k<10;k++){
+			hints[row][col][k] = 0;
+		}
+	}
+	
 	
 	//want to make this recursive next
 	void solve(){
 		printBoardBy3x3();
 		populateHints();
-		printHints();
+//		printHints();
 		do{
 			changesMadeTotal=false;
 			do{
@@ -310,10 +371,24 @@ public class SudokuSolverTopDown2 {
 		SudokuSolverTopDown2 ss = new SudokuSolverTopDown2();
 		ss.loadBoard(1);
 		ss.printBoardBy3x3();
-	/*	ss.printHints(0, 0);
-		ss.printHints(3, 3);*/
+		ss.printHintQuantitiesBy3x3();
+		ss.printHints(3,1);
+		ss.fillInSolos();
+		System.out.println("End first fill in solos");
+		ss.printHintQuantitiesBy3x3();
+		ss.printHints(3,1);
 //		ss.fillInSolos();
-		ss.solve();
-		ss.printBoardBy3x3();
+
+		
+//		ss.findUniquesInGrids();
+		
+		
+//		ss.printBoardBy3x3();
+		
+//		ss.printHintsInGrid();
+//		ss.printHintQuantitiesBy3x3();
+		
+		
+		
 	}
 }
